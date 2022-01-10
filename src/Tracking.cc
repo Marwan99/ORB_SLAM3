@@ -601,6 +601,27 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
             mDistCoef.at<float>(4) = node.real();
         }
 
+        node = fSettings["Camera.k4"];
+        if(!node.empty() && node.isReal())
+        {
+            mDistCoef.resize(6);
+            mDistCoef.at<float>(5) = node.real();
+        }
+
+        node = fSettings["Camera.k5"];
+        if(!node.empty() && node.isReal())
+        {
+            mDistCoef.resize(7);
+            mDistCoef.at<float>(6) = node.real();
+        }
+
+        node = fSettings["Camera.k6"];
+        if(!node.empty() && node.isReal())
+        {
+            mDistCoef.resize(8);
+            mDistCoef.at<float>(7) = node.real();
+        }
+
         if(b_miss_params)
         {
             return false;
@@ -620,7 +641,11 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         std::cout << "- cy: " << cy << std::endl;
         std::cout << "- k1: " << mDistCoef.at<float>(0) << std::endl;
         std::cout << "- k2: " << mDistCoef.at<float>(1) << std::endl;
-
+        std::cout << "- k3: " << mDistCoef.at<float>(4) << std::endl;
+        std::cout << "- k4: " << mDistCoef.at<float>(5) << std::endl;
+        std::cout << "- k5: " << mDistCoef.at<float>(6) << std::endl;
+        std::cout << "- k6: " << mDistCoef.at<float>(7) << std::endl;
+        std::cout << "- Num: " << mDistCoef.rows << std::endl;
 
         std::cout << "- p1: " << mDistCoef.at<float>(2) << std::endl;
         std::cout << "- p2: " << mDistCoef.at<float>(3) << std::endl;
@@ -946,7 +971,7 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         std::cerr << "Check an example configuration file with the desired sensor" << std::endl;
     }
 
-    if(mSensor==System::STEREO || mSensor==System::IMU_STEREO)
+    if(mSensor==System::STEREO || mSensor==System::RGBD || mSensor==System::IMU_STEREO)
     {
         cv::FileNode node = fSettings["Camera.bf"];
         if(!node.empty() && node.isReal())
@@ -987,6 +1012,7 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         if(!node.empty()  && node.isReal())
         {
             mThDepth = node.real();
+            cout << endl << "***** mThDepth " << mThDepth << "***** mbf " << mbf << "***** fx " << fx << endl;
             mThDepth = mbf*mThDepth/fx;
             cout << endl << "Depth Threshold (Close/Far Points): " << mThDepth << endl;
         }
