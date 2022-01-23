@@ -204,6 +204,7 @@ public:
     Sophus::SE3f GetPose();
 
     Sophus::SE3f GetPoseInverse();
+    void GetImgsAndPose(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose);
     Eigen::Vector3f GetCameraCenter();
 
     Eigen::Vector3f GetImuPosition();
@@ -431,6 +432,10 @@ protected:
     Eigen::Matrix3f mRcw;
     Sophus::SE3<float> mTwc;
     Eigen::Matrix3f mRwc;
+
+    // Keyframe data
+    cv::Mat imRGB_;
+    cv::Mat imDepth_;
 
     // IMU position
     Eigen::Vector3f mOwb;

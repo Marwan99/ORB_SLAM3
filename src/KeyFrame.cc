@@ -93,6 +93,9 @@ KeyFrame::KeyFrame(Frame &F, Map *pMap, KeyFrameDatabase *pKFDB):
     SetPose(F.GetPose());
 
     mnOriginMapId = pMap->GetId();
+
+    imRGB_ = F.imRGB_;
+    imDepth_ = F.imDepth_;
 }
 
 void KeyFrame::ComputeBoW()
@@ -138,6 +141,15 @@ Sophus::SE3f KeyFrame::GetPoseInverse()
 {
     unique_lock<mutex> lock(mMutexPose);
     return mTwc;
+}
+
+void KeyFrame::GetImgsAndPose(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
+{
+    unique_lock<mutex> lock(mMutexPose);
+    imRGB = imRGB_;
+    imDepth = imDepth_;
+    pose = mTwc;
+    return;
 }
 
 Eigen::Vector3f KeyFrame::GetCameraCenter(){
