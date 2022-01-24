@@ -34,9 +34,6 @@
 #include <mutex>
 #include <chrono>
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 
 using namespace std;
 
@@ -1586,29 +1583,6 @@ Sophus::SE3f Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, co
 
     return mCurrentFrame.GetPose();
 }
-
-void Tracking::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses)
-{
-    vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
-
-    std::random_device rand_device;
-    std::mt19937 gen(rand_device());
-    std::uniform_real_distribution<double> unidorm_dist(0, keyframes.size());
-
-    cv::Mat temp_imgRGB, temp_imgDepth;
-    Sophus::SE3f  temp_pose;
-
-    for(int i=0; i<samples_num; i++)
-    {
-        int rand = static_cast<int>(unidorm_dist(gen));
-
-        keyframes[rand]->GetImgsAndPose(temp_imgRGB,temp_imgDepth, temp_pose);
-        imRGBList.push_back(temp_imgRGB);
-        imDepthList.push_back(temp_imgDepth);
-        poses.push_back(temp_pose);
-    }
-}
-
 
 Sophus::SE3f Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp, string filename)
 {

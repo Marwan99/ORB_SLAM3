@@ -33,6 +33,9 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace ORB_SLAM3
 {
 
@@ -564,6 +567,31 @@ void System::Shutdown()
 bool System::isShutDown() {
     unique_lock<mutex> lock(mMutexReset);
     return mbShutDown;
+}
+
+void System::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses)
+{
+    vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
+
+    std::random_device rand_device;
+    std::mt19937 gen(rand_device());
+    std::uniform_real_distribution<double> unidorm_dist(0, keyframes.size());
+
+    cv::Mat temp_imgRGB, temp_imgDepth;
+    Sophus::SE3f  temp_pose;
+
+    if(samples_num > keyframes.size())
+        samples_num = keyframes.size();
+
+    for(int i=0; i<samples_num; i++)
+    {
+        int rand = static_cast<int>(unidorm_dist(gen));
+
+        keyframes[rand]->GetImgsAndPose(temp_imgRGB,temp_imgDepth, temp_pose);
+        imRGBList.push_back(temp_imgRGB);
+        imDepthList.push_back(temp_imgDepth);
+        poses.push_back(temp_pose);
+    }
 }
 
 void System::SaveTrajectoryTUM(const string &filename)

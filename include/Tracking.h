@@ -108,8 +108,6 @@ public:
 
     float GetImageScale();
 
-    void sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses);
-
 #ifdef REGISTER_LOOP
     void RequestStop();
     bool isStopped();
