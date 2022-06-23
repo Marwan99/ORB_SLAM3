@@ -594,6 +594,13 @@ void System::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList,
     }
 }
 
+void System::get_latest_keyframe(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
+{
+    vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
+
+    keyframes.back()->GetImgsAndPose(imRGB,imDepth, pose);
+}
+
 void System::SaveTrajectoryTUM(const string &filename)
 {
     cout << endl << "Saving camera trajectory to " << filename << " ..." << endl;
