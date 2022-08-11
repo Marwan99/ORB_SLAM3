@@ -594,6 +594,22 @@ void System::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList,
     }
 }
 
+void System::get_all_keyframes(std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses)
+{
+    vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
+
+    cv::Mat temp_imgRGB, temp_imgDepth;
+    Sophus::SE3f  temp_pose;
+
+    for(auto keyframe: keyframes)
+    {
+        keyframe->GetImgsAndPose(temp_imgRGB,temp_imgDepth, temp_pose);
+        imRGBList.push_back(temp_imgRGB);
+        imDepthList.push_back(temp_imgDepth);
+        poses.push_back(temp_pose);
+    }
+}
+
 void System::get_latest_keyframe(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
 {
     vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
