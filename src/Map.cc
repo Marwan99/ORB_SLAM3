@@ -150,6 +150,12 @@ vector<KeyFrame*> Map::GetAllKeyFrames()
     return vector<KeyFrame*>(mspKeyFrames.begin(),mspKeyFrames.end());
 }
 
+size_t Map::GetKeyFramesCount()
+{
+    unique_lock<mutex> lock(mMutexMap);
+    return mspKeyFrames.size();
+}
+
 vector<MapPoint*> Map::GetAllMapPoints()
 {
     unique_lock<mutex> lock(mMutexMap);

@@ -188,7 +188,9 @@ public:
 
     void sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses);
     void get_all_keyframes(std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses);
-    void get_latest_keyframe(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose);
+    void get_all_keyframes_poses(std::vector<Sophus::SE3f> & poses, std::vector<uint8_t> & ids);
+    size_t get_keyframes_count();
+    void get_latest_keyframe(uint8_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose);
 
 #ifdef REGISTER_TIMES
     void InsertRectTime(double& time);

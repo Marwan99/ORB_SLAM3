@@ -579,6 +579,7 @@ void System::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList,
 
     cv::Mat temp_imgRGB, temp_imgDepth;
     Sophus::SE3f  temp_pose;
+    uint8_t id;
 
     if(samples_num > keyframes.size())
         samples_num = keyframes.size();
@@ -587,7 +588,7 @@ void System::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList,
     {
         int rand = static_cast<int>(unidorm_dist(gen));
 
-        keyframes[rand]->GetImgsAndPose(temp_imgRGB,temp_imgDepth, temp_pose);
+        keyframes[rand]->GetImgsAndPose(id, temp_imgRGB,temp_imgDepth, temp_pose);
         imRGBList.push_back(temp_imgRGB);
         imDepthList.push_back(temp_imgDepth);
         poses.push_back(temp_pose);
@@ -600,21 +601,38 @@ void System::get_all_keyframes(std::vector<cv::Mat> & imRGBList, std::vector<cv:
 
     cv::Mat temp_imgRGB, temp_imgDepth;
     Sophus::SE3f  temp_pose;
+    uint8_t id;
 
     for(auto keyframe: keyframes)
     {
-        keyframe->GetImgsAndPose(temp_imgRGB,temp_imgDepth, temp_pose);
+        keyframe->GetImgsAndPose(id, temp_imgRGB,temp_imgDepth, temp_pose);
         imRGBList.push_back(temp_imgRGB);
         imDepthList.push_back(temp_imgDepth);
         poses.push_back(temp_pose);
     }
 }
 
-void System::get_latest_keyframe(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
+size_t System::get_keyframes_count()
+{
+    return mpAtlas->GetCurrentMap()->GetKeyFramesCount();
+}
+
+void System::get_all_keyframes_poses(std::vector<Sophus::SE3f> & poses, std::vector<uint8_t> & ids)
 {
     vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
 
-    keyframes.back()->GetImgsAndPose(imRGB,imDepth, pose);
+    for(auto keyframe: keyframes)
+    {
+        ids.push_back(keyframe->mnId);
+        poses.push_back(keyframe->GetPoseInverse());
+    }
+}
+
+void System::get_latest_keyframe(uint8_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
+{
+    vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
+
+    keyframes.back()->GetImgsAndPose(id, imRGB,imDepth, pose);
 }
 
 void System::SaveTrajectoryTUM(const string &filename)

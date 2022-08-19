@@ -143,9 +143,10 @@ Sophus::SE3f KeyFrame::GetPoseInverse()
     return mTwc;
 }
 
-void KeyFrame::GetImgsAndPose(cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
+void KeyFrame::GetImgsAndPose(uint8_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
 {
     unique_lock<mutex> lock(mMutexPose);
+    id = mnId;
     imRGB = imRGB_;
     imDepth = imDepth_;
     pose = mTwc;
