@@ -579,7 +579,7 @@ void System::sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList,
 
     cv::Mat temp_imgRGB, temp_imgDepth;
     Sophus::SE3f  temp_pose;
-    uint8_t id;
+    uint64_t id;
 
     if(samples_num > keyframes.size())
         samples_num = keyframes.size();
@@ -601,7 +601,7 @@ void System::get_all_keyframes(std::vector<cv::Mat> & imRGBList, std::vector<cv:
 
     cv::Mat temp_imgRGB, temp_imgDepth;
     Sophus::SE3f  temp_pose;
-    uint8_t id;
+    uint64_t id;
 
     for(auto keyframe: keyframes)
     {
@@ -617,7 +617,7 @@ size_t System::get_keyframes_count()
     return mpAtlas->GetCurrentMap()->GetKeyFramesCount();
 }
 
-void System::get_all_keyframes_poses(std::vector<Sophus::SE3f> & poses, std::vector<uint8_t> & ids)
+void System::get_all_keyframes_poses(std::vector<Sophus::SE3f> & poses, std::vector<uint64_t> & ids)
 {
     vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
 
@@ -628,7 +628,7 @@ void System::get_all_keyframes_poses(std::vector<Sophus::SE3f> & poses, std::vec
     }
 }
 
-void System::get_latest_keyframe(uint8_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
+void System::get_latest_keyframe(uint64_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose)
 {
     vector<KeyFrame*> keyframes = mpAtlas->GetAllKeyFrames();
 

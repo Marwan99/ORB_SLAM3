@@ -204,7 +204,7 @@ public:
     Sophus::SE3f GetPose();
 
     Sophus::SE3f GetPoseInverse();
-    void GetImgsAndPose(uint8_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose);
+    void GetImgsAndPose(uint64_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose);
     Eigen::Vector3f GetCameraCenter();
 
     Eigen::Vector3f GetImuPosition();
