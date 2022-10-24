@@ -187,7 +187,7 @@ public:
     float GetImageScale();
 
     void sample_keyframes(int samples_num, std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses);
-    void get_all_keyframes(std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses);
+    void get_all_keyframes(std::vector<uint64_t> & ids, std::vector<cv::Mat> & imRGBList, std::vector<cv::Mat> & imDepthList, std::vector<Sophus::SE3f> & poses);
     void get_all_keyframes_poses(std::vector<Sophus::SE3f> & poses, std::vector<uint64_t> & ids);
     size_t get_keyframes_count();
     void get_latest_keyframe(uint64_t & id, cv::Mat & imRGB, cv::Mat & imDepth, Sophus::SE3f & pose);
